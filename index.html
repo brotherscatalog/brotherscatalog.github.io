@@ -2,10 +2,139 @@
 <html lang="el">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=brothers_catalog.pdf">
-<title>Κατάλογος</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brother's — Κατάλογος</title>
+<meta name="theme-color" content="#0F0C0A">
+<meta http-equiv="refresh" content="4; url=brothers_catalog.pdf">
+<style>
+  :root{
+    --ink:#0F0C0A;
+    --ink-soft:#1C1611;
+    --brass:#C89B5A;
+    --brass-lit:#E3C08A;
+    --cream:#EFE4D6;
+    --muted:#8C7A66;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 50% 8%, var(--ink-soft) 0%, var(--ink) 62%);
+    color:var(--cream);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 24px calc(32px + env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:100%;
+    max-width:360px;
+    text-align:center;
+  }
+  .mark{
+    mix-blend-mode:screen;
+    width:min(270px,76vw);
+    height:auto;
+    margin:0 auto;
+    display:block;
+    animation:rise .9s cubic-bezier(.2,.7,.3,1) both;
+  }
+  .wordmark{
+    font-size:clamp(30px,10vw,40px);
+    letter-spacing:.01em;
+    margin:0;
+    font-weight:400;
+    animation:rise .9s cubic-bezier(.2,.7,.3,1) both;
+  }
+
+  /* signature: the extraction line — a bead of espresso drawing itself across */
+  .extract{
+    position:relative;
+    width:132px;
+    height:1px;
+    margin:34px auto 0;
+    background:rgba(200,155,90,.18);
+    animation:rise .9s .16s cubic-bezier(.2,.7,.3,1) both;
+  }
+  .extract::before{
+    content:"";
+    position:absolute;
+    inset:0 auto 0 0;
+    width:0;
+    background:linear-gradient(90deg,transparent,var(--brass));
+    animation:pull 2.2s cubic-bezier(.5,0,.5,1) infinite;
+  }
+  .extract::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+    width:5px;
+    height:5px;
+    margin:-2.5px 0 0 -2.5px;
+    border-radius:50%;
+    background:var(--brass-lit);
+    box-shadow:0 0 10px rgba(227,192,138,.55);
+    animation:bead 2.2s cubic-bezier(.5,0,.5,1) infinite;
+  }
+  @keyframes pull{0%{width:0}70%,100%{width:100%}}
+  @keyframes bead{0%{left:0;opacity:0}8%{opacity:1}70%,100%{left:100%;opacity:1}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .status{
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:13px;
+    letter-spacing:.02em;
+    color:var(--muted);
+    margin:18px 0 0;
+  }
+  .manual{
+    display:inline-block;
+    margin-top:26px;
+    padding:13px 26px;
+    border:1px solid rgba(200,155,90,.45);
+    border-radius:2px;
+    color:var(--brass-lit);
+    text-decoration:none;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:0;
+    transform:translateY(6px);
+    pointer-events:none;
+    transition:opacity .5s ease,transform .5s ease;
+  }
+  .manual.show{opacity:1;transform:none;pointer-events:auto}
+  .manual:focus-visible{outline:2px solid var(--brass-lit);outline-offset:3px}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .extract::before{width:100%}
+    .extract::after{left:100%}
+    .manual{opacity:1;transform:none;pointer-events:auto}
+  }
+</style>
 </head>
 <body>
-<p>Φόρτωση καταλόγου… <a href="brothers_catalog.pdf">Πατήστε εδώ</a></p>
+  <main class="card">
+    <img class="mark" src="logo.png" alt="Brother's Coffee &amp; Bakery"
+         onerror="this.remove();document.getElementById('wm').hidden=false">
+    <h1 class="wordmark" id="wm" hidden>Brother's</h1>
+
+    <div class="extract" role="presentation"></div>
+    <p class="status">Ο κατάλογος ανοίγει…</p>
+
+    <a class="manual" id="manual" href="brothers_catalog.pdf">Άνοιγμα καταλόγου</a>
+  </main>
+
+<script>
+  var PDF = "brothers_catalog.pdf";
+  setTimeout(function(){ window.location.replace(PDF); }, 1500);
+  setTimeout(function(){ document.getElementById("manual").classList.add("show"); }, 2600);
+</script>
 </body>
 </html>
